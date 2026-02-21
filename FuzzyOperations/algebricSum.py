@@ -8,9 +8,10 @@ x = np.linspace(0, 10, 1000)
 
 setA = triangular_mf(x, 1, 3, 5)
 setB = triangular_mf(x, 2, 6, 8)
-inter = np.minimum(setA, setB)
+# inter = np.minimum(setA, setB)
 
-alg_sum = (setA + setB) - inter
+# Algebraic sum: A ⊕ B = A + B - (A × B), clamped to [0,1]
+alg_sum = (setA + setB) - (setA * setB)
 
 plt.plot(x, setA, label=f"setA", linestyle='dashed')
 plt.plot(x, setB, label=f"setB", linestyle='dashed')
