@@ -11,7 +11,6 @@ cities = {
 POP_SIZE      = 100
 GENERATIONS   = 500
 MUTATION_RATE = 0.02
-ELITE_SIZE    = 20
 
 # ─────────────────────────────────────────────────────────────
 
@@ -35,18 +34,15 @@ def create_population():
 
 
 def select_parents(population):
-    # Sort by shortest distance (best first)
-    population.sort(key=total_distance)
-
     # Collect fitness values for roulette selection
     fitnesses = []
     for route in population:
         fitnesses.append(1 / total_distance(route))
 
-    selected = population[:ELITE_SIZE]  # keep elites
+    selected = []
     total_fit = sum(fitnesses)
 
-    # Fill remaining spots using roulette wheel
+    # Fill all spots using roulette wheel
     while len(selected) < POP_SIZE:
         pick = random.random() * total_fit
         running = 0
@@ -87,7 +83,7 @@ def mutate(route):
 
 
 def next_generation(selected):
-    children = selected[:ELITE_SIZE]  # elites pass unchanged
+    children = []
     random.shuffle(selected)
 
     while len(children) < POP_SIZE:
