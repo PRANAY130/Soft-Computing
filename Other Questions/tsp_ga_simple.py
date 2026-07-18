@@ -34,44 +34,19 @@ def create_population():
 
 
 def select_parents(population):
-    # Collect fitness values for roulette selection
-    fitnesses = []
-    for route in population:
-        fitnesses.append(1 / total_distance(route))
-
     selected = []
-    total_fit = sum(fitnesses)
 
-    # Fill all spots using roulette wheel
     while len(selected) < POP_SIZE:
-        pick = random.random() * total_fit
-        running = 0
-        for i in range(len(population)):
-            running += fitnesses[i]
-            if running >= pick:
-                selected.append(population[i])
-                break
+        # Pick 2 random routes, keep the shorter one
+        r1 = random.choice(population)
+        r2 = random.choice(population)
+        if total_distance(r1) < total_distance(r2):
+            selected.append(r1)
+        else:
+            selected.append(r2)
 
     return selected
 
-
-def crossover(p1, p2):
-    # Ordered crossover (OX): take a slice from p1, fill rest from p2
-    size = len(p1)
-    start = random.randint(0, size - 1)
-    end   = random.randint(start + 1, size)
-
-    child = [None] * size
-    child[start:end] = p1[start:end]
-
-    pos = 0
-    for city in p2:
-        if city not in child:
-            while child[pos] is not None:
-                pos += 1
-            child[pos] = city
-
-    return child
 
 
 def mutate(route):
@@ -84,13 +59,10 @@ def mutate(route):
 
 def next_generation(selected):
     children = []
-    random.shuffle(selected)
 
     while len(children) < POP_SIZE:
-        p1 = selected[len(children) % len(selected)]
-        p2 = selected[(len(children) + 1) % len(selected)]
-        child = crossover(p1, p2)
-        child = mutate(child)
+        parent = selected[len(children) % len(selected)]
+        child = mutate(parent[:])
         children.append(child)
 
     return children
