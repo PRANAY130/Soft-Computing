@@ -28,9 +28,9 @@ for _ in range(POP_SIZE):
 best_route = None
 best_dist  = float("inf")
 
-print("=" * 45)
+# print("=" * 45)
 print("  TSP - Genetic Algorithm")
-print("=" * 45)
+# print("=" * 45)
 
 for gen in range(1, GENERATIONS + 1):
 
@@ -60,8 +60,8 @@ for gen in range(1, GENERATIONS + 1):
     if gen % 100 == 0:
         print(f"  Gen {gen:4d} | Best Distance = {best_dist:.4f}")
 
-print("=" * 45)
+# print("=" * 45)
 print("RESULT:")
 print("  Route    :", " -> ".join(best_route), "->", best_route[0])
 print("  Distance :", round(best_dist, 4))
-print("=" * 45)
+# print("=" * 45)
